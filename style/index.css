@@ -1,0 +1,23 @@
+body {
+    background: #faeaea;
+}
+
+.race {
+    border: solid 1px black;
+    display: block;
+    position: relative;
+}
+
+.btn {
+    width: 150px;
+    height: 50px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    color: red;
+    position: absolute;
+    top: 400px;
+    left: 10%;
+    cursor: pointer;
+}
