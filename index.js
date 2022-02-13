@@ -1,7 +1,20 @@
 //! consts
+const gameInner = document.getElementById('gameInner');
 const canvas = document.getElementById('race');
 const ctx = canvas.getContext('2d');;
+const mainMenu = document.getElementById('mainMenu');
+const btnStart = document.getElementById('btnStart');
+const btnInOntions = document.getElementById('btnInOntions');
+const btnToggleMusic = document.getElementById('btnToggleMusic');
+const lossMenu = document.getElementById('lossMenu');
 const btnRepeat = document.getElementById('btnRepeat');
+const btnInMenu = document.querySelectorAll("#btnInMenu")
+const optionsMenu = document.getElementById('optionsMenu');
+const valueAudio = document.getElementById('valueAudio');
+const pointsBar = document.getElementById('pointsBar');
+const numberPoints = document.querySelectorAll('#numberPoints')
+let points = 0
+let counterPoints;
 
 const options = {
   state: 'stop',
@@ -9,18 +22,17 @@ const options = {
   height: canvas.height,
   numberOfRoads: Math.floor(canvas.width/200),
   rangeOfLine: 500/3,
-  colorOfLine: '#948080',
-  speedEnemy: 7,
+  colorOfLine: '#0000ff10',
+  speedEnemy: 2,
   audio: false,
-}
-console.log(options.numberOfRoads);
+};
 
 //! objects
 const carPlayer = new Image();
 carPlayer.src = "images/car-player.png";
 carPlayer.X = 100;
 carPlayer.Y = 400;
-carPlayer.width = 330;
+carPlayer.width = 166;
 carPlayer.height = 50;
 
 const carEnemy = new Image();
@@ -58,11 +70,9 @@ function clearField() {
 function gameOver() {
   carEnemy.Y = null;
   ctx.clearRect(0, 0, 1000, 1000);
-  ctx.font = "50px serif";
-  ctx.fillStyle = "red";
-  ctx.fillText('GAME OVER', options.width/6, options.height/2);
-  toggleDisplayElem(btnRepeat, 'flex');
-  
+  closeAllMenu()
+  toggleDisplayElem(lossMenu, 'flex');
+  counterPointsReset()
   audioPlay(audioCollision)
 }
 
@@ -105,29 +115,78 @@ function render() {
     respawnEnemy()
     drawEnemy()
     moveDownEnemy()
+    counterPointsPlus()
     if ( checkCollisionCars() ) {
       gameOver()
       return
     }
+    
 
     myReq = requestAnimationFrame(render);
 }
 
+function closeAllMenu() {
+  toggleDisplayElem(lossMenu, 'none')
+  toggleDisplayElem(optionsMenu, 'none')
+  toggleDisplayElem(mainMenu, 'none')
+  toggleDisplayElem(pointsBar, 'none')
+}
+
+function counterPointsPlus() {
+  points += 0.1;
+  
+  numberPoints.forEach(el => {el.innerHTML = Math.floor(points)})
+}
+function counterPointsReset() {
+  points = 0
+}
 
 //! init game
-spawnEnemy()
-render()
+// spawnEnemy()
+// render()
 
 // ! events
 btnRepeat.addEventListener('click', eventRepeatGame);
 canvas.addEventListener('mousemove', eventMovePlayer);
 
+btnStart.addEventListener('click', eventStartGame);
+btnInOntions.addEventListener('click', eventInOntions);
+btnToggleMusic.addEventListener('click', eventToggleMusic);
+btnRepeat.addEventListener('click', eventRepeatGame);
+btnInMenu.forEach(e => {e.addEventListener('click', eventInMainMenu);})
+gameInner.addEventListener('mousedown', (e) => e.preventDefault());
+
 function eventMovePlayer(e) {
   carPlayer.X = e.clientX - canvas.offsetLeft - carPlayer.width/2;
+  carPlayer.Y = e.clientY - canvas.offsetTop - carPlayer.height/2;
+}
+
+function eventInMainMenu(e) {
+  closeAllMenu()
+  toggleDisplayElem(mainMenu, 'flex')
 }
 
 function eventRepeatGame() {
-  toggleDisplayElem(btnRepeat, 'none');
+  eventStartGame()
+}
+
+function eventStartGame() {
+  closeAllMenu()
+  toggleDisplayElem(pointsBar, 'flex')
   spawnEnemy()
   render()
+}
+
+function eventInOntions(e) {
+  closeAllMenu()
+  toggleDisplayElem(optionsMenu, 'flex')
+}
+
+function eventToggleMusic() {
+  options.audio = !options.audio
+  if (options.audio) {
+    valueAudio.textContent = 'ON';
+    return
+  }
+  valueAudio.textContent = 'OFF';
 }

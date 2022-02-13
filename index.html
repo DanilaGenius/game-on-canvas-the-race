@@ -8,10 +8,39 @@
     <title>Race</title>
 </head>
 <body>
-    <canvas id="race" class="race" width="1000px" height="600px">
+    <div class="game" id="gameInner">
+        <canvas class="game__race" id="race" width="1000px" height="600px">
         
-    </canvas>
-    <div class="btn" id="btnRepeat">repeat the game</div>
+        </canvas>
+        
+        <div class="game__main-menu menu" id="mainMenu">
+            <h1 class="menu__title title">Menu</h1>
+            <div class="menu__start btn menu__btns" id="btnStart">Start</div>
+            <div class="menu__ontions btn menu__btns" id="btnInOntions">Options</div>
+            
+        </div>
+
+        <div class="game__loss-menu loss" id="lossMenu">
+            <h1 class="loss__title title">You lost</h1>
+            <div class="loss__repeat btn loss__btns" id="btnRepeat">Start over</div> 
+            <div class="loss__menu btn loss__btns" id="btnInMenu">Main menu</div>
+
+            <p class="loss__points text">points scored: <span id="numberPoints">0</span></p>
+        </div>
+
+        <div class="game__options-menu options" id="optionsMenu">
+            <h1 class="options__title title">Options</h1>
+            <div class="menu__music btn menu__btns" id="btnToggleMusic">Music:<span id="valueAudio">ON</span></div>
+            <div class="options__menu btn options__btns" id="btnInMenu">Main menu</div>
+        </div>
+
+        <div class="game__points-bar points-bar" id="pointsBar">
+            <p class="points-bar__points text">points: <span id="numberPoints">0</span></p>
+            
+        </div>
+
+    </div>
+
     <script src="./index.js"></script>
 </body>
 </html>
